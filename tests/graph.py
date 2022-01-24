@@ -40,6 +40,7 @@ class Graph(App):
         HB.add_widget(self.graph1)
         superBox.add_widget(HB)
         superBox.add_widget(VB) 
+        self.time = 0
 
         Clock.schedule_interval(self.update, 0.1)
         
@@ -47,6 +48,8 @@ class Graph(App):
 
     def update(self, *args):
         #Generating info
+        self.time = Clock.get_time()
+        print(self.time)
         cpuinfo = psutil.cpu_percent()
     
         #Saving CPU info
@@ -76,7 +79,7 @@ class Graph(App):
     def sendInfo(self,instance):
         try:
             print("Sending info...")
-            data = str(psutil.cpu_percent()) + "|" + str(psutil.virtual_memory().percent)
+            data = str(psutil.cpu_percent()) + "/" + str(psutil.virtual_memory().percent)
             sock.send(data.encode())
             print("Sent")
             response = sock.recv(1024).decode()
